@@ -1,12 +1,13 @@
 <script>
-	export let items = [
-		{
-			id: 1,
-			title: 'First TODO item.',
-			completed: false,
-		}
-	]
-	const itemsLength = items.length
+	import {items} from '../stores.js'
+	let items_arr = [];
+	let itemsLength
+
+	const unsubscribe = items.subscribe(value => {
+		items_arr = value
+		itemsLength = items_arr.length
+	})
+
 </script>
 
 <style>
@@ -35,7 +36,7 @@
 
 <h1>{itemsLength} Items in TODO list</h1>
 <ul>
-	{#each items as todo, index (todo.id)}
+	{#each items_arr as todo, index (todo.id)}
 		<li>
 			<input type="checkbox" checked={todo.completed}/> {todo.title}
 		</li>
