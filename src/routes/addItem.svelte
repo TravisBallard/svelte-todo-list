@@ -1,8 +1,18 @@
 <script>
-    export let items = []
-    const addItem = (item) => items.push(item)
+  import {items} from '../stores.js'
+  let items_arr = [];
+  const unsubscribe = items.subscribe(value => items_arr = value)
 
-    console.log('items', items)
+  const addItem = (event) => {
+    items_arr.push({
+      id: Math.random() * 1999,
+      title: document.getElementById('item').value
+    })
+    items.set(items_arr)
+    document.getElementById('item').value = ''
+  }
+
+
 </script>
 
 <style>
@@ -12,12 +22,12 @@
 </style>
 
 <h2>Add item</h2>
-<form>
+<form on:submit={() => { return false }}>
     <div>
         <label for="item">Item to add:</label>
         <input type="text" id="item" value="" placeholder="Enter item here." size="100">
     </div>
     <div>
-        <input type="submit" value="Submit">
+        <input type="button" value="Submit" on:click={e => addItem(e)}>
     </div>
 </form>
